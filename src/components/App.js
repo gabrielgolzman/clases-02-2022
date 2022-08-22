@@ -1,6 +1,7 @@
 import "./App.css";
 
 import Books from "./books/Books/Books";
+import NewBook from "./books/NewBook/NewBook";
 
 const App = () => {
   const books = [
@@ -34,6 +35,7 @@ const App = () => {
     <>
       <h2>Books-Champions-App</h2>
       <p>Quiero leer libros!</p>
+      <NewBook />
       <Books books={books} />
     </>
   );
