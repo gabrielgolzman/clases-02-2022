@@ -31,11 +31,16 @@ const App = () => {
     },
   ];
 
+  const saveBookHandler = (bookData) => {
+    console.log("In App.js");
+    console.log(bookData);
+  };
+
   return (
     <>
       <h2>Books-Champions-App</h2>
       <p>Quiero leer libros!</p>
-      <NewBook />
+      <NewBook saveBook={saveBookHandler} />
       <Books books={books} />
     </>
   );
