@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./BookForm.css";
 
-const BookForm = ({ saveBookData }) => {
+const BookForm = ({ saveBookData, onCancel }) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAuthor, setEnteredAuthor] = useState("");
   const [enteredPageCount, setEnteredPageCount] = useState("");
@@ -29,7 +29,7 @@ const BookForm = ({ saveBookData }) => {
       title: enteredTitle,
       author: enteredAuthor,
       pageCount: enteredPageCount,
-      dateRead: Date(enteredDate).toString(),
+      dateRead: new Date(enteredDate),
     };
 
     saveBookData(bookData);
@@ -38,6 +38,10 @@ const BookForm = ({ saveBookData }) => {
     setEnteredAuthor("");
     setEnteredPageCount("");
     setEnteredDate("");
+  };
+
+  const handleCancelClick = () => {
+    onCancel();
   };
 
   return (
@@ -81,6 +85,9 @@ const BookForm = ({ saveBookData }) => {
         </div>
       </div>
       <div className="new-book-actions">
+        <button onClick={handleCancelClick} type="button">
+          Cancelar
+        </button>
         <button onClick={submitBookHandler} type="button">
           Agregar lectura
         </button>
