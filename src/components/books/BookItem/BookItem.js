@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./BookItem.css";
 
@@ -18,7 +18,8 @@ const BookItem = ({ title, author, dateRead, pageCount }) => {
       <BookCard>
         <h2>{newTitle}</h2>
         <h3>{author}</h3>
-        <ReadDate dateRead={dateRead} />
+        { dateRead && <ReadDate dateRead={dateRead} /> }
+        
         <p>{pageCount}</p>
         <button onClick={clickHandler}>Cambiar titulo</button>
       </BookCard>

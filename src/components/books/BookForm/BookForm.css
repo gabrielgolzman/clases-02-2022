@@ -1,3 +1,9 @@
+.dark-form {
+  filter: contrast(0.2);
+}
+.light-form {
+  opacity: 0.9;
+}
 .new-book-controls {
   display: flex;
   flex-wrap: wrap;

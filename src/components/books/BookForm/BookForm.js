@@ -1,4 +1,6 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+
+import SettingsContext from "../../context/SettingsContext";
 
 import "./BookForm.css";
 
@@ -11,6 +13,8 @@ const BookForm = ({ saveBookData, onCancel }) => {
   const [coverImage, setCoveredImage] = useState("");
   const fileInput = useRef(null);
   const pageCountInputRef = useRef(null);
+
+  const theme = useContext(SettingsContext);
 
   const changeTitleHandler = (event) => {
     const errorsValidation = validateBook({ title: event.target.value });
@@ -96,7 +100,7 @@ const BookForm = ({ saveBookData, onCancel }) => {
     const errorsValidation = validateBook(bookData);
 
     // TODO: U3.1 - C) Después de validar y encontrar el error en un campo quisiera hacerle foco en él.
-    console.log('errors', errorsValidation, Object.keys(errorsValidation));
+    // console.log('errors', errorsValidation, Object.keys(errorsValidation));
     if (Object.keys(errorsValidation).length === 0) { // form ok
       saveBookData(bookData);
   
@@ -122,10 +126,10 @@ const BookForm = ({ saveBookData, onCancel }) => {
     onCancel();
   };
 
-  console.log('errors', errors);
+  // console.log('errors', errors);
 
   return (
-    <form>
+    <form className={theme.theme === 'dark' ? 'dark-form' : 'light-form'}>
       <div className="new-book-controls">
         <div className="new-book-control">
           <label>Titulo</label>

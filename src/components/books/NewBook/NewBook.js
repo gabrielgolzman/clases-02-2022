@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import "./NewBook.css";
 
 import BookForm from "../BookForm/BookForm";
+import AuthContext from "../../context/AuthContext";
+
+
 
 const NewBook = ({ saveBook }) => {
   const [showForm, setShowForm] = useState(false);
@@ -24,9 +27,12 @@ const NewBook = ({ saveBook }) => {
     setShowForm(false);
   };
 
+  const currentUser = useContext(AuthContext);
+
   return (
     <div className="new-book">
-      {showForm ? (
+
+      { showForm && currentUser?.rol === 'admin' ? (
         <BookForm onCancel={handleCancel} saveBookData={saveBookDataHandler} />
       ) : (
         <button
@@ -34,7 +40,7 @@ const NewBook = ({ saveBook }) => {
           className="new-book-actions"
           type="button"
         >
-          Mostrar formulario
+          { currentUser?.rol === 'admin' ? 'Mostrar formulario' : 'Debes ser admin' }
         </button>
       )}
     </div>

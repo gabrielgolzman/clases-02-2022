@@ -4,6 +4,8 @@ import BookItem from "../BookItem/BookItem";
 import BooksFilter from "../../filter/BooksFilter";
 import React, { useState } from "react";
 
+import SettingsContext from "../../context/SettingsContext";
+
 const Books = ({ books }) => {
   const [filterYear, setFilterYear] = useState("all");
 
@@ -28,25 +30,28 @@ const Books = ({ books }) => {
     ));
 
   return (
-    <>
-      <BooksFilter filterYear={filterYear} yearChanged={yearChangedHandler} />
-      <div className="books-container">
-        {booksMapped.length === 0 ? (
-          <p>No hay libros registrados en {filterYear}</p>
-        ) : (
-          booksMapped
-        )}
+    <SettingsContext.Provider value={{ dateFormat: 'en-US' }}>
+      <>
+        <BooksFilter filterYear={filterYear} yearChanged={yearChangedHandler} />
+        
+        <div className="books-container">
+          {booksMapped.length === 0 ? (
+            <p>No hay libros registrados en {filterYear}</p>
+          ) : (
+            booksMapped
+          )}
 
-        {/* {books.map((item) => (
-          <BookItem
-            title={item.title}
-            author={item.author}
-            dateRead={item.dateRead}
-            pageCount={item.pageCount}
-          />
-        ))} */}
-      </div>
-    </>
+          {/* {books.map((item) => (
+            <BookItem
+              title={item.title}
+              author={item.author}
+              dateRead={item.dateRead}
+              pageCount={item.pageCount}
+            />
+          ))} */}
+        </div>
+      </>
+    </SettingsContext.Provider>
   );
 };
 
