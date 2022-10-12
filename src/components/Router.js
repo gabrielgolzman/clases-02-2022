@@ -4,6 +4,7 @@ import AdminScreen from "./screens/AdminScreen";
 import BooksScreen from "./screens/BooksScreen";
 import LoginScreen from "./screens/LoginScreen";
 
+// Router casero
 const Router = () => {
     const currentUser = useContext(AuthContext);
     return (

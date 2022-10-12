@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import useSettings from "../../hooks/useSettings";
 
 import Books from "../books/Books/Books";
 import NewBook from "../books/NewBook/NewBook";
@@ -7,6 +8,8 @@ import LogoutButton from '../ui/LogoutButton';
 
 const BooksScreen = () => {
   const [books, setBooks] = useState([]);
+  const [ appTheme, setAppTheme ] = useSettings();
+  // useAuth
 
   const saveBookHandler = (bookData) => {
     let newBooks = [bookData, ...books];
@@ -43,7 +46,7 @@ const BooksScreen = () => {
         >
             Borrar todos
         </button>
-        {/* <button
+        <button
             onClick={() => {
                 setAppTheme({
                     theme: appTheme.theme === 'dark' ? 'light' : 'dark',
@@ -52,7 +55,8 @@ const BooksScreen = () => {
             }}
         >
             { appTheme.theme === 'dark' ? 'Claro' : 'Oscuro'}
-        </button> */}
+        </button>
+        <span>Tema actual: { appTheme.theme }</span>
         <Books books={books} />
     </>
   );

@@ -6,6 +6,7 @@ import AuthContext from "./context/AuthContext";
 import AuthDispatchContext from "./context/AuthDispatchContext";
 import Router from "./Router";
 import constants from "../utils/constants";
+import SettingsDispatchContext from "./context/SettingsDispatchContext";
 
 /*
 - Promesas, fetch y localStorage
@@ -23,20 +24,19 @@ import constants from "../utils/constants";
 
 const App = () => {
   // redux: reducer // state managment
-  const [appTheme, setAppTheme] = useState({ theme: 'dark', dateFormat: 'en-US' });
 
   return (
-    <SettingsContext.Provider value={appTheme}>
-      <AuthProvider>
-        <Router />
-      </AuthProvider>
-    </SettingsContext.Provider>
+      <SettingsProvider>
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </SettingsProvider>
   );
 };
 
 export default App;
 
-
+// Redux casero
 const AuthProvider = ({ children }) => {
   // redux: reducer // state managment
   const [currentUser, setCurrentUser] = useState(null);
@@ -56,5 +56,17 @@ const AuthProvider = ({ children }) => {
           { children }
         </AuthDispatchContext.Provider>
       </AuthContext.Provider>
+  );
+};
+
+const SettingsProvider = ({ children }) => {
+  const [appTheme, setAppTheme] = useState({ theme: 'dark', dateFormat: 'en-US' });
+
+  return (
+      <SettingsContext.Provider value={appTheme}>
+        <SettingsDispatchContext.Provider value={setAppTheme}>
+          { children }
+        </SettingsDispatchContext.Provider>
+      </SettingsContext.Provider>
   );
 };
