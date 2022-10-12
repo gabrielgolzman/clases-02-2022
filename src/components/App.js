@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-import Books from "./books/Books/Books";
-import NewBook from "./books/NewBook/NewBook";
 import SettingsContext from "./context/SettingsContext";
 import AuthContext from "./context/AuthContext";
+import AuthDispatchContext from "./context/AuthDispatchContext";
+import Router from "./Router";
+import constants from "../utils/constants";
 
 /*
 - Promesas, fetch y localStorage
@@ -19,96 +20,41 @@ import AuthContext from "./context/AuthContext";
 - useContext: libros favoritos
 */
 
-const DUMMY_BOOKS = [
-  {
-    id: 1,
-    title: "100 años de soledad",
-    author: "Gabriel García Marquez",
-    dateRead: new Date(2021, 8, 12),
-    pageCount: 410,
-  },
-  {
-    id: 2,
-    title: "Todos los fuegos el fuego",
-    author: "Julio Cortazar",
-    dateRead: new Date(2020, 6, 11),
-    pageCount: 197,
-  },
-  {
-    id: 3,
-    title: "Asesinato en el Orient Express",
-    author: "Agatha Christie",
-    dateRead: new Date(2021, 5, 9),
-    pageCount: 256,
-  },
-  {
-    id: 4,
-    title: "Las dos torres",
-    author: "J.R.R Tolkien",
-    dateRead: new Date(2020, 3, 22),
-    pageCount: 352,
-  },
-];
 
 const App = () => {
-  const [books, setBooks] = useState([]);
+  // redux: reducer // state managment
   const [appTheme, setAppTheme] = useState({ theme: 'dark', dateFormat: 'en-US' });
-  const [currentUser, setCurrentUser] = useState({ rol: 'admin' });
-
-  const saveBookHandler = (bookData) => {
-    let newBooks = [bookData, ...books];
-    setBooks(newBooks);
-    localStorage.setItem('books', JSON.stringify(newBooks));
-  };
-  useEffect(() => {
-    let valueStr = localStorage.getItem('books');
-
-    try {
-      if (valueStr) {
-        let localBooks = JSON.parse(valueStr);
-        setBooks(localBooks);
-      } else {
-        setBooks([]);
-      }
-    } catch (ex) {
-      alert('Ocurrió error inesperado.');
-      setBooks([]);
-    }
-  }, []);
-
 
   return (
     <SettingsContext.Provider value={appTheme}>
-      <AuthContext.Provider value={currentUser}>
-        <>
-          <h2>Books-Champions-App</h2>
-          <p>Quiero leer libros!</p>
-          <NewBook saveBook={saveBookHandler} />
-          <button 
-            onClick={() => {
-              console.log('borre los libros');
-              setBooks([]);
-              localStorage.removeItem('books');
-            }}
-          >
-            Borrar todos
-          </button>
-          <button
-            onClick={() => {
-              setAppTheme({
-                theme: appTheme.theme === 'dark' ? 'light' : 'dark',
-                dateFormat: appTheme.theme === 'dark' ? 'es-AR' : 'en-US'
-              });
-            }}
-          >
-            { appTheme.theme === 'dark' ? 'Claro' : 'Oscuro'}
-          </button>
-          <span>{ JSON.stringify(appTheme) }</span>
-          <Books books={books} />
-        </>
-      </AuthContext.Provider>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
     </SettingsContext.Provider>
   );
 };
 
 export default App;
+
+
+const AuthProvider = ({ children }) => {
+  // redux: reducer // state managment
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const localUserStr = window.localStorage.getItem(constants.CURRENT_USER_STORAGE_KEY);
+    try {
+      const localUser = JSON.parse(localUserStr); // 
+      setCurrentUser(localUser);
+    } catch (ex) {
+      setCurrentUser(null);
+    }
+  }, []);
+
+  return (
+      <AuthContext.Provider value={currentUser}>
+        <AuthDispatchContext.Provider value={setCurrentUser}>
+          { children }
+        </AuthDispatchContext.Provider>
+      </AuthContext.Provider>
+  );
+};

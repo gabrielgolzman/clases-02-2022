@@ -32,7 +32,7 @@ const NewBook = ({ saveBook }) => {
   return (
     <div className="new-book">
 
-      { showForm && currentUser?.rol === 'admin' ? (
+      { showForm && currentUser?.role === 'admin' ? (
         <BookForm onCancel={handleCancel} saveBookData={saveBookDataHandler} />
       ) : (
         <button
@@ -40,7 +40,7 @@ const NewBook = ({ saveBook }) => {
           className="new-book-actions"
           type="button"
         >
-          { currentUser?.rol === 'admin' ? 'Mostrar formulario' : 'Debes ser admin' }
+          { currentUser?.role === 'admin' ? 'Mostrar formulario' : 'Debes ser admin' }
         </button>
       )}
     </div>
